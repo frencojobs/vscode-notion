@@ -1,27 +1,30 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
+import { NotionPanel } from "./notionPanel";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-notion.open", async () => {
+      const input = await vscode.window.showInputBox({
+        prompt: "Enter a full URL or just ID of the document.",
+      });
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-notion" is now active!');
+      if (input !== undefined) {
+        const data = await vscode.window.withProgress<string>(
+          {
+            title: "woo",
+            location: vscode.ProgressLocation.Notification,
+            cancellable: true,
+          },
+          async (progress, _) => {
+            progress.report({ message: "loading" });
+            return "woo";
+          }
+        );
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-notion.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from VSCode Notion!');
-	});
-
-	context.subscriptions.push(disposable);
+        NotionPanel.createOrShow(context.extensionUri);
+      }
+    })
+  );
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {}
