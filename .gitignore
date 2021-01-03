@@ -1,2 +1,6 @@
-*.code-workspace
+out
+dist
 node_modules
+.vscode-test/
+*.vsix
+assets/webview

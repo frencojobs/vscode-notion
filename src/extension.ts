@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import fetch from "node-fetch";
-import NotionPanel from "./notionPanel";
+import Panel from "./panel";
 import parseUrl from "./utils/parseUrl";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         console.log(data);
 
-        NotionPanel.createOrShow(context.extensionUri);
+        Panel.createOrShow(context.extensionUri);
       }
     })
   );

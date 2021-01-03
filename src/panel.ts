@@ -1,8 +1,8 @@
 import * as vscode from "vscode";
 import getNonce from "./utils/getNonce";
 
-export default class NotionPanel {
-  public static currentPanels: Array<NotionPanel> = [];
+export default class Panel {
+  public static currentPanels: Array<Panel> = [];
   public static readonly viewType = "notionPanel";
 
   private readonly _panel: vscode.WebviewPanel;
@@ -15,16 +15,16 @@ export default class NotionPanel {
       : undefined;
 
     const panel = vscode.window.createWebviewPanel(
-      NotionPanel.viewType,
+      Panel.viewType,
       "Uwu",
       column || vscode.ViewColumn.One,
       {
         enableScripts: true,
-        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
+        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "assets")],
       }
     );
 
-    this.currentPanels.push(new NotionPanel(panel, extensionUri));
+    this.currentPanels.push(new Panel(panel, extensionUri));
   }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -67,11 +67,15 @@ export default class NotionPanel {
     const nonce = getNonce();
 
     const stylesResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
+      vscode.Uri.joinPath(this._extensionUri, "assets", "reset.css")
     );
 
     const stylesMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "media", "vscode.css")
+      vscode.Uri.joinPath(this._extensionUri, "assets", "vscode.css")
+    );
+
+    const reactWebviewUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "assets", "webview", "index.js")
     );
 
     return `<!DOCTYPE html>
@@ -86,10 +90,10 @@ export default class NotionPanel {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesResetUri}" rel="stylesheet">
         <link href="${stylesMainUri}" rel="stylesheet">
-        <title>Why</title>
     </head>
     <body>
-        <h1>Hey Notion</h1>
+        <div id="root"></div>
+        <script nonce="${nonce}" src="${reactWebviewUri}"></script>
     </body>
     </html>`;
   }
