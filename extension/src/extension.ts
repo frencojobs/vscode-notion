@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
-import { NotionPanel } from "./notionPanel";
+import fetch from "node-fetch";
+import NotionPanel from "./notionPanel";
+import parseUrl from "./utils/parseUrl";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -9,17 +11,25 @@ export function activate(context: vscode.ExtensionContext) {
       });
 
       if (input !== undefined) {
-        const data = await vscode.window.withProgress<string>(
+        const url = parseUrl(
+          vscode.workspace.getConfiguration("notion").get("api") as string,
+          input
+        );
+
+        const data = await vscode.window.withProgress<Record<string, unknown>>(
           {
-            title: "woo",
+            title: "VSCode Notion",
             location: vscode.ProgressLocation.Notification,
             cancellable: true,
           },
           async (progress, _) => {
-            progress.report({ message: "loading" });
-            return "woo";
+            progress.report({ message: "loading data" });
+            const body = await (await fetch(url)).json();
+            return body;
           }
         );
+
+        console.log(data);
 
         NotionPanel.createOrShow(context.extensionUri);
       }
