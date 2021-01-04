@@ -29,9 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
           }
         );
 
-        console.log(data);
-
-        Panel.createOrShow(context.extensionUri);
+        Panel.createOrShow(context.extensionUri, data);
       }
     })
   );
