@@ -77,14 +77,6 @@ export default class Panel {
   ) {
     const nonce = getNonce();
 
-    const stylesResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "assets", "reset.css")
-    );
-
-    const stylesMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "assets", "vscode.css")
-    );
-
     const reactWebviewUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "assets", "webview", "index.js")
     );
@@ -99,12 +91,12 @@ export default class Panel {
         -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${
           webview.cspSource
-        }; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+        } 'unsafe-inline'; img-src ${
+      webview.cspSource
+    } https:; script-src 'nonce-${nonce}';">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="${stylesResetUri}" rel="stylesheet">
-        <link href="${stylesMainUri}" rel="stylesheet">
         <script nonce=${nonce}>
-          window.data = "${JSON.stringify(data)}";
+          window.data = ${JSON.stringify(data)};
         </script>
     </head>
     <body>
