@@ -1,4 +1,3 @@
-import "react-notion/src/styles.css";
 import React from "react";
 import { BlockMapType, NotionRenderer } from "react-notion";
 
@@ -10,7 +9,13 @@ declare global {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: React.FC = () => {
-  return <NotionRenderer blockMap={window.data as BlockMapType} />;
+  return (
+    <NotionRenderer
+      fullPage
+      hideHeader
+      blockMap={window.data as BlockMapType}
+    />
+  );
 };
 
 export default App;
