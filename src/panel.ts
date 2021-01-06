@@ -19,7 +19,7 @@ export default class Panel {
 
     const panel = vscode.window.createWebviewPanel(
       Panel.viewType,
-      "Uwu",
+      "VSCode Notion",
       column || vscode.ViewColumn.One,
       {
         enableScripts: true,
@@ -67,7 +67,22 @@ export default class Panel {
 
   private _update() {
     const webview = this._panel.webview;
-    this._panel.title = "Woo";
+
+    const firstKey = Object.keys(this._data)[0];
+    const firstBlock = (this._data[firstKey] as {
+      value: Record<string, unknown>;
+    }).value as {
+      properties: {
+        title: Array<Array<unknown>>;
+      };
+    };
+
+    if (firstBlock?.properties?.title?.[0]) {
+      this._panel.title = firstBlock.properties.title[0]
+        .filter((x) => typeof x === "string")
+        .reduce<string>((a, b) => a + b, "");
+    }
+
     this._panel.webview.html = this._getHtmlForWebView(webview, this._data);
   }
 
@@ -109,6 +124,7 @@ export default class Panel {
         <link href="${stylesMainUri}" rel="stylesheet">
         <link href="${stylesNotionUri}" rel="stylesheet">
         <script nonce=${nonce}>
+          window.vscode = acquireVsCodeApi();
           window.data = ${JSON.stringify(data)};
         </script>
     </head>
