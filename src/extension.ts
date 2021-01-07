@@ -1,38 +1,27 @@
-import * as vscode from "vscode";
-import fetch from "node-fetch";
-import Panel from "./panel";
-import parseUrl from "./utils/parseUrl";
+import * as vscode from 'vscode'
+
+import openPanel from './utils/openPanel'
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand("vscode-notion.open", async () => {
+    vscode.commands.registerCommand('vscode-notion.open', async () => {
       const input = await vscode.window.showInputBox({
-        prompt: "Enter a full URL or just ID of the document.",
-      });
+        prompt: 'Enter a full URL or just ID of the document.',
+      })
 
-      if (input !== undefined) {
-        const url = parseUrl(
-          vscode.workspace.getConfiguration("notion").get("api") as string,
-          input
-        );
-
-        const data = await vscode.window.withProgress<Record<string, unknown>>(
-          {
-            title: "VSCode Notion",
-            location: vscode.ProgressLocation.Notification,
-            cancellable: true,
-          },
-          async (progress, _) => {
-            progress.report({ message: "loading data" });
-            const body = await (await fetch(url)).json();
-            return body;
+      if (!!input) {
+        try {
+          await openPanel(context, input)
+        } catch (e) {
+          if (e instanceof Error) {
+            await vscode.window.showErrorMessage(
+              e.message ?? 'Unable to load the data!'
+            )
           }
-        );
-
-        Panel.createOrShow(context.extensionUri, data);
+        }
       }
     })
-  );
+  )
 }
 
 export function deactivate() {}
