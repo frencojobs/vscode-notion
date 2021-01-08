@@ -1,8 +1,18 @@
 {
   "name": "vscode-notion",
+  "version": "0.0.1",
   "displayName": "VSCode Notion",
   "description": "View notion documents directly in Visual Studio Code.",
-  "version": "0.0.1",
+  "icon": "assets/vscode-notion.png",
+  "author": "Frenco <hey@frenco.dev>",
+  "homepage": "https://github.com/frencojobs/vscode-notion#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frencojobs/vscode-notion"
+  },
+  "bugs": {
+    "url": "https://github.com/frencojobs/vscode-notion/issues"
+  },
   "engines": {
     "vscode": "^1.52.0"
   },
@@ -11,7 +21,7 @@
   ],
   "activationEvents": [
     "onCommand:vscode-notion.open",
-    "onWebviewPanel:notionPanel"
+    "onWebviewPanel:notion_panel"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -81,5 +91,6 @@
       "style": "absolute",
       "parser": "typescript"
     }
-  }
+  },
+  "license": "MIT"
 }

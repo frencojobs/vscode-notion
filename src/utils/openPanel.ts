@@ -15,7 +15,6 @@ export default async function openPanel(
 
   const input = urlOrId.trim()
   if (!input) {
-    console.log('url is empty!')
     throw new Error("The URL or ID can't be empty.")
   }
 
