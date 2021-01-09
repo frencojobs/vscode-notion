@@ -1,6 +1,47 @@
+body.vscode-light .notion-page-link,
+body.vscode-light .notion-image-caption,
+body.vscode-light .notion-bookmark > div:first-child,
+body.vscode-light .notion-bookmark-link > div,
+body.vscode-light .notion-th {
+  color: rgb(55, 53, 47);
+  caret-color: rgb(55, 53, 47);
+}
+
+body.vscode-dark .notion-page-link,
+body.vscode-dark .notion-image-caption,
+body.vscode-dark .notion-bookmark > div:first-child,
+body.vscode-dark .notion-bookmark-link > div,
+body.vscode-dark .notion-th {
+  color: rgba(255, 255, 255, 0.9);
+  caret-color: rgba(255, 255, 255, 0.9);
+}
+
+body.vscode-light .notion-bookmark,
+body.vscode-light .notion-table,
+body.vscode-light .notion-th,
+body.vscode-light .notion-td {
+  border: 1px solid rgba(55, 53, 47, 0.16);
+}
+
+body.vscode-dark .notion-bookmark,
+body.vscode-dark .notion-table,
+body.vscode-dark .notion-th,
+body.vscode-dark .notion-td {
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+body.vscode-light .notion-gallery {
+  border-top: 1px solid rgba(55, 53, 47, 0.16);
+}
+
+body.vscode-dark .notion-gallery {
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+}
+
 .notion {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: var(--notion-font-family);
+  font-size: var(--notion-font-size);
+  line-height: 1.5;
 }
 
 .notion > *,
@@ -222,7 +263,7 @@ img.notion-page-icon-offset {
 }
 .notion-page-link {
   display: flex;
-  color: rgb(55, 53, 47);
+  /* color: rgb(55, 53, 47); */
   text-decoration: none;
   height: 30px;
   margin: 1px 0px;
@@ -370,7 +411,7 @@ img.notion-page-icon {
   width: 100%;
   box-sizing: border-box;
   text-decoration: none;
-  border: 1px solid rgba(55, 53, 47, 0.16);
+  /* border: 1px solid rgba(55, 53, 47, 0.16); */
   border-radius: 3px;
   display: flex;
   overflow: hidden;
@@ -382,7 +423,7 @@ img.notion-page-icon {
   padding: 12px 14px 14px;
   overflow: hidden;
   text-align: left;
-  color: rgb(55, 53, 47);
+  /* color: rgb(55, 53, 47); */
 }
 
 .notion-bookmark-title {
@@ -418,7 +459,7 @@ img.notion-page-icon {
 .notion-bookmark-link > div {
   font-size: 12px;
   line-height: 16px;
-  color: rgb(55, 53, 47);
+  /* color: rgb(55, 53, 47); */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -474,10 +515,10 @@ img.notion-page-icon {
   padding: 6px 0px;
   white-space: pre-wrap;
   word-break: break-word;
-  caret-color: rgb(55, 53, 47);
+  /* caret-color: rgb(55, 53, 47); */
   font-size: 14px;
   line-height: 1.4;
-  color: rgba(55, 53, 47, 0.6);
+  /* color: rgba(55, 53, 47, 0.6); */
 }
 
 .notion-callout {
@@ -508,7 +549,7 @@ img.notion-page-icon {
 .notion-table,
 .notion-th,
 .notion-td {
-  border: 1px solid rgba(55, 53, 47, 0.09);
+  /* border: 1px solid rgba(55, 53, 47, 0.09); */
   border-collapse: collapse;
 }
 
@@ -535,7 +576,7 @@ img.notion-page-icon {
 }
 
 .notion-th {
-  color: rgba(55, 53, 47, 0.6);
+  /* color: rgba(55, 53, 47, 0.6); */
   font-size: 14px;
 }
 
@@ -555,7 +596,7 @@ img.notion-page-icon {
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-auto-rows: 1fr;
   gap: 16px;
-  border-top: 1px solid rgba(55, 53, 47, 0.16);
+  /* border-top: 1px solid rgba(55, 53, 47, 0.16); */
   padding-top: 16px;
   padding-bottom: 4px;
 }
