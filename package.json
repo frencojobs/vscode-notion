@@ -21,6 +21,7 @@
   ],
   "activationEvents": [
     "onCommand:vscode-notion.open",
+    "onCommand:vscode-notion.refresh",
     "onWebviewPanel:vscode-notion.view"
   ],
   "main": "./dist/extension.js",
@@ -50,8 +51,23 @@
         "command": "vscode-notion.open",
         "category": "VSCode Notion",
         "title": "Open A Document"
+      },
+      {
+        "command": "vscode-notion.refresh",
+        "category": "VSCode Notion",
+        "title": "Refresh Active Document",
+        "icon": "$(extensions-refresh)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "vscode-notion.refresh",
+          "when": "notionViewFocus",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",

@@ -6,8 +6,11 @@ import fetchData from './utils/fetchData'
 import getNonce from './utils/getNonce'
 
 export default class NotionPanel {
-  private static cache = new Map<string, NotionPanel>()
   public static readonly viewType = 'vscode-notion.view'
+  public static readonly viewActiveContextKey = 'notionViewFocus'
+
+  public static activeView: string | undefined = undefined
+  public static cache = new Map<string, NotionPanel>()
 
   private readonly id: string
   private readonly uri: vscode.Uri
@@ -72,9 +75,14 @@ export default class NotionPanel {
 
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables)
     this.panel.onDidChangeViewState(
-      (_) => {
+      ({ webviewPanel }) => {
+        this.setViewActiveContext(webviewPanel.active)
+
         if (this.panel.visible) {
+          NotionPanel.activeView = this.id
           this.update()
+        } else {
+          NotionPanel.activeView = undefined
         }
       },
       null,
@@ -95,6 +103,9 @@ export default class NotionPanel {
   }
 
   public dispose() {
+    this.setViewActiveContext(false)
+
+    NotionPanel.activeView = undefined
     NotionPanel.cache.delete(this.id)
 
     this.panel.dispose()
@@ -104,6 +115,21 @@ export default class NotionPanel {
         x.dispose()
       }
     }
+  }
+
+  public async refresh() {
+    this.data = await vscode.window.withProgress<NotionData>(
+      {
+        title: 'VSCode Notion',
+        location: vscode.ProgressLocation.Notification,
+      },
+      async (progress, _) => {
+        progress.report({ message: 'Refreshing...' })
+        return fetchData(this.id)
+      }
+    )
+
+    this.update()
   }
 
   private update() {
@@ -198,5 +224,13 @@ export default class NotionPanel {
         ${this.getScripts(webview, nonce, data)}
     </body>
     </html>`
+  }
+
+  private setViewActiveContext(value: boolean) {
+    vscode.commands.executeCommand(
+      'setContext',
+      NotionPanel.viewActiveContextKey,
+      value
+    )
   }
 }
