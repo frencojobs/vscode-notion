@@ -21,24 +21,24 @@
   ],
   "activationEvents": [
     "onCommand:vscode-notion.open",
-    "onWebviewPanel:notion.view"
+    "onWebviewPanel:vscode-notion.view"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "configuration": {
       "title": "VSCode Notion",
       "properties": {
-        "notion.api": {
+        "VSCodeNotion.api": {
           "type": "string",
           "default": "https://notion-api.splitbee.io",
           "description": "Specifies the API url to get the Notion data from."
         },
-        "notion.fontSize": {
+        "VSCodeNotion.fontSize": {
           "type": "number",
           "default": 14,
           "description": "Specifies the font size in pixels."
         },
-        "notion.fontFamily": {
+        "VSCodeNotion.fontFamily": {
           "type": "string",
           "default": "'Helvetica Neue', sans-serif",
           "description": "Specifies the font family to use when rendering the Notion page."

@@ -1,27 +1,14 @@
 import * as vscode from 'vscode'
 
-import openPanel from './utils/openPanel'
+import * as commands from './commands'
+import { CommandManager } from './commandManager'
 
 export function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand('vscode-notion.open', async () => {
-      const input = await vscode.window.showInputBox({
-        prompt: 'Enter a full URL or just ID of the document.',
-      })
-
-      if (!!input) {
-        try {
-          await openPanel(context, input)
-        } catch (e) {
-          if (e instanceof Error) {
-            await vscode.window.showErrorMessage(
-              e.message ?? 'Unable to load the data!'
-            )
-          }
-        }
-      }
-    })
-  )
+  context.subscriptions.push(registerCommands(context))
 }
 
-export function deactivate() {}
+function registerCommands(context: vscode.ExtensionContext): vscode.Disposable {
+  const commandManager = new CommandManager()
+  commandManager.register(new commands.OpenPage(context))
+  return commandManager
+}

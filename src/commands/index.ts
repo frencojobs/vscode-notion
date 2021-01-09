@@ -1,0 +1,1 @@
+export { OpenPage } from './openPage'
