@@ -88,8 +88,14 @@ export default class Panel {
     }
   }
 
+  private get iconPath() {
+    const root = vscode.Uri.joinPath(this._extensionUri, 'assets')
+    return vscode.Uri.joinPath(root, 'notion.png')
+  }
+
   private _update() {
     const webview = this._panel.webview
+    this._panel.iconPath = this.iconPath
 
     const firstKey = Object.keys(this._data)[0]
     const firstBlock = (this._data[firstKey] as {
