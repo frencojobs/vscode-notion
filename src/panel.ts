@@ -4,7 +4,7 @@ import getNonce from './utils/getNonce'
 import openPanel from './utils/openPanel'
 
 export default class Panel {
-  public static readonly viewType = 'notion_panel'
+  public static readonly viewType = 'notion.view'
 
   private readonly _data: Record<string, unknown>
   private readonly _panel: vscode.WebviewPanel
@@ -25,6 +25,7 @@ export default class Panel {
       column || vscode.ViewColumn.One,
       {
         enableScripts: true,
+        retainContextWhenHidden: true,
         localResourceRoots: [
           vscode.Uri.joinPath(context.extensionUri, 'assets'),
         ],
@@ -113,6 +114,9 @@ export default class Panel {
     data: Record<string, unknown>
   ) {
     const nonce = getNonce()
+    const config = vscode.workspace.getConfiguration('notion')
+    const fontSize = config.get('fontSize') as number
+    const fontFamily = config.get('fontFamily') as string
 
     const stylesResetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, 'assets', 'reset.css')
@@ -140,11 +144,22 @@ export default class Panel {
         -->
         <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${
           webview.cspSource
-        }; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+        } 'nonce-${nonce}'; img-src ${
+      webview.cspSource
+    } https:; script-src 'nonce-${nonce}';">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="${stylesResetUri}" rel="stylesheet">
         <link href="${stylesMainUri}" rel="stylesheet">
         <link href="${stylesNotionUri}" rel="stylesheet">
+        <style nonce=${nonce}>
+          .notion {
+            font-size: ${fontSize}px !important;
+            font-family: ${fontFamily
+              .split(',')
+              .map((x) => x.trim())
+              .join(', ')} !important;
+          }
+        </style>
         <script nonce=${nonce}>
           window.vscode = acquireVsCodeApi();
           window.data = ${JSON.stringify(data)};
