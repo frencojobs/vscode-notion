@@ -30,14 +30,14 @@ export default class NotionPanelManager
 
   private getMetaTags(webview: vscode.Webview, nonce: string): string {
     return `
-      <meta charset="UTF-8">
-      <meta name="viewport" 
-             content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Content-Security-Policy" 
-             content="default-src 'none'; 
-                      style-src ${webview.cspSource} 'nonce-${nonce}'; 
-                      img-src ${webview.cspSource} https:; 
-                      script-src 'nonce-${nonce}';">`
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+            content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" 
+            content="default-src 'none'; 
+                    style-src ${webview.cspSource} 'nonce-${nonce}'; 
+                    img-src ${webview.cspSource} https:; 
+                    script-src 'nonce-${nonce}';">`
   }
 
   private getStyles(webview: vscode.Webview, uri: vscode.Uri): string {
@@ -58,11 +58,11 @@ export default class NotionPanelManager
     )
 
     return `
-      <script nonce=${nonce}>
-        window.vscode = acquireVsCodeApi();
-        window.data = ${JSON.stringify(data)};
-      </script>
-      <script nonce="${nonce}" src="${reactWebviewUri}"></script>`
+    <script nonce=${nonce}>
+      window.vscode = acquireVsCodeApi();
+      window.data = ${JSON.stringify(data)};
+    </script>
+    <script nonce="${nonce}" src="${reactWebviewUri}"></script>`
   }
 
   public get iconPath() {
