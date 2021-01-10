@@ -31,7 +31,7 @@
       "properties": {
         "VSCodeNotion.api": {
           "type": "string",
-          "default": "https://notion-api.splitbee.io",
+          "default": "https://notion-api.frenco.dev",
           "description": "Specifies the API url to get the Notion data from."
         },
         "VSCodeNotion.fontSize": {
