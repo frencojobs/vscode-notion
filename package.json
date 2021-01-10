@@ -1,7 +1,7 @@
 {
   "preview": true,
   "name": "vscode-notion",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "icon": "assets/vscode-notion.png",
   "displayName": "VSCode Notion",
   "description": "View Notion documents directly in Visual Studio Code.",
@@ -20,6 +20,10 @@
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "notion",
+    "notion.so"
   ],
   "activationEvents": [
     "onCommand:vscode-notion.open",
@@ -72,7 +76,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run package",
+    "vscode:prepublish": "yarn run package:webview && yarn run package",
     "compile:webview": "webpack --config ./build/react-webview.webpack.config.js",
     "compile": "webpack --config ./build/node-extension.webpack.config.js",
     "watch:webview": "webpack --watch --config ./build/react-webview.webpack.config.js",
@@ -106,13 +110,13 @@
     "typescript": "^4.1.2",
     "vscode-test": "^1.4.1",
     "webpack": "^5.10.0",
-    "webpack-cli": "^4.2.0"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
+    "webpack-cli": "^4.2.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-notion": "^0.9.3"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   },
   "importSort": {
     ".js, .jsx, .ts, .tsx": {

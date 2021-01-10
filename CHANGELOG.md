@@ -1,3 +1,11 @@
+## 0.0.4
+
+- Exclude webview dependencies from package, reducing extension size
+
+## 0.0.3
+
+- Fix disappearing input box error
+
 ## 0.0.2
 
 - Fix disposed webview left in cache error
