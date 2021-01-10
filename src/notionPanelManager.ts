@@ -1,18 +1,60 @@
 import * as vscode from 'vscode'
 
-import { NotionData } from './types'
+import { NotionData, NotionState } from './types'
+import NotionPanel from './notionPanel'
 import escapeAttribute from './utils/escapeAttribute'
+import fetchData from './utils/fetchData'
 import getNonce from './utils/getNonce'
 
 export default class NotionPanelManager
   implements vscode.WebviewPanelSerializer {
+  public cache = new Map<string, NotionPanel>()
+
   constructor(private readonly uri: vscode.Uri) {}
+
+  public async createOrShow(id: string) {
+    const column = vscode.window.activeTextEditor
+      ? vscode.window.activeTextEditor.viewColumn
+      : undefined
+
+    if (this.cache.has(id)) {
+      this.cache.get(id)?.revive(column)
+    } else {
+      const data = await vscode.window.withProgress<NotionData>(
+        {
+          title: 'VSCode Notion',
+          location: vscode.ProgressLocation.Notification,
+        },
+        async (progress, _) => {
+          progress.report({ message: 'Loading...' })
+          return fetchData(id)
+        }
+      )
+
+      const panel = vscode.window.createWebviewPanel(
+        NotionPanel.viewType,
+        'VSCode Notion',
+        column || vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+          retainContextWhenHidden: true,
+          localResourceRoots: [vscode.Uri.joinPath(this.uri, 'assets')],
+        }
+      )
+      panel.iconPath = this.iconPath
+
+      this.cache.set(id, new NotionPanel(id, panel, this, data))
+    }
+  }
 
   public async deserializeWebviewPanel(
     webviewPanel: vscode.WebviewPanel,
-    state: NotionData
+    state: { id: string; data: NotionData }
   ) {
-    webviewPanel.webview.html = this.getHTML(webviewPanel.webview, state)
+    this.cache.set(
+      state.id,
+      new NotionPanel(state.id, webviewPanel, this, state.data)
+    )
   }
 
   private getSettingsOverrideStyles(
@@ -51,7 +93,7 @@ export default class NotionPanelManager
     webview: vscode.Webview,
     uri: vscode.Uri,
     nonce: string,
-    data: NotionData
+    state: NotionState
   ): string {
     const reactWebviewUri = webview.asWebviewUri(
       vscode.Uri.joinPath(uri, 'assets', 'webview', 'index.js')
@@ -59,8 +101,9 @@ export default class NotionPanelManager
 
     return `
     <script nonce=${nonce}>
-      window.vscode = acquireVsCodeApi();
-      window.data = ${JSON.stringify(data)};
+      const vscode = acquireVsCodeApi();
+      vscode.setState(${JSON.stringify(state)});
+      window.vscode = vscode;
     </script>
     <script nonce="${nonce}" src="${reactWebviewUri}"></script>`
   }
@@ -70,7 +113,7 @@ export default class NotionPanelManager
     return vscode.Uri.joinPath(root, 'notion.png')
   }
 
-  public getHTML(webview: vscode.Webview, data: NotionData) {
+  public getHTML(webview: vscode.Webview, state: NotionState) {
     const nonce = getNonce()
     const config = vscode.workspace.getConfiguration('VSCodeNotion')
 
@@ -84,7 +127,7 @@ export default class NotionPanelManager
     </head>
     <body>
         <div id="root"></div>
-        ${this.getScripts(webview, this.uri, nonce, data)}
+        ${this.getScripts(webview, this.uri, nonce, state)}
     </body>
     </html>`
   }

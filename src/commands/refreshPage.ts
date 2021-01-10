@@ -1,14 +1,18 @@
-import * as vscode from 'vscode'
-
 import { Command } from '../commandManager'
-import NotionPanel from '../notionPanel'
+import NotionPanelManager from '../notionPanelManager'
 
 export class RefreshPage implements Command {
   public readonly id = 'vscode-notion.refresh'
 
-  public execute() {
-    if (NotionPanel.activeView) {
-      NotionPanel.cache.get(NotionPanel.activeView)?.refresh()
+  constructor(private readonly manager: NotionPanelManager) {}
+
+  execute() {
+    const activeViews = Array.from(this.manager.cache.values()).filter(
+      (x) => x.isActive
+    )
+
+    for (const view of activeViews) {
+      view.refresh()
     }
   }
 }

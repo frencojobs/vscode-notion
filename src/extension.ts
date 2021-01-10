@@ -7,16 +7,13 @@ import NotionPanelManager from './notionPanelManager'
 export function activate(context: vscode.ExtensionContext) {
   const manager = new NotionPanelManager(context.extensionUri)
 
-  context.subscriptions.push(registerCommands(context, manager))
+  context.subscriptions.push(registerCommands(manager))
   vscode.window.registerWebviewPanelSerializer('vscode-notion.view', manager)
 }
 
-function registerCommands(
-  context: vscode.ExtensionContext,
-  manager: NotionPanelManager
-): vscode.Disposable {
+function registerCommands(manager: NotionPanelManager): vscode.Disposable {
   const commandManager = new CommandManager()
-  commandManager.register(new commands.OpenPage(context, manager))
-  commandManager.register(new commands.RefreshPage())
+  commandManager.register(new commands.OpenPage(manager))
+  commandManager.register(new commands.RefreshPage(manager))
   return commandManager
 }
