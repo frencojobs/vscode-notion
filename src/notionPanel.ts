@@ -67,6 +67,7 @@ export default class NotionPanel {
   private dispose() {
     this.setViewActiveContext(false)
     this.panel.dispose()
+    this.manager.dispose(this.id)
 
     while (this.disposables.length) {
       const x = this.disposables.pop()

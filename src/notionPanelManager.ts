@@ -57,6 +57,10 @@ export default class NotionPanelManager
     )
   }
 
+  public dispose(id: string) {
+    this.cache.delete(id)
+  }
+
   private getSettingsOverrideStyles(
     config: vscode.WorkspaceConfiguration
   ): string {
