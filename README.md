@@ -8,10 +8,12 @@ View Notion documents directly in Visual Studio Code.
 
 Here is the checklist for features I'm planning to add to the extension.
 
-- [ ] View notion pages
+- [x] View notion pages
+- [ ] Support embeddings for certain trusted sources
 - [ ] Syntax highlight for code snippets
+- [ ] Sidebar for opened pages
 - [ ] Authentication for viewing private pages
-- [ ] A sidebar for all of user's pages
+- [ ] Sidebar for all of user's pages
 
 _Authentication is not currently available since the unofficial API doesn't support much._ But I'm planning to add it as soon as I get access to the official notion API that is coming very soon.
 
@@ -32,7 +34,3 @@ _You can choose to host your own API server with [notion-api-worker](https://git
 ## License
 
 MIT © Frenco Jobs
-
-```
-
-```
