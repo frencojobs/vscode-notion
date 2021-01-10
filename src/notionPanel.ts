@@ -1,9 +1,8 @@
 import * as vscode from 'vscode'
 
 import { NotionData } from './types'
-import escapeAttribute from './utils/escapeAttribute'
+import NotionPanelManager from './notionPanelManager'
 import fetchData from './utils/fetchData'
-import getNonce from './utils/getNonce'
 
 export default class NotionPanel {
   public static readonly viewType = 'vscode-notion.view'
@@ -13,7 +12,6 @@ export default class NotionPanel {
   public static cache = new Map<string, NotionPanel>()
 
   private readonly id: string
-  private readonly uri: vscode.Uri
   private readonly panel: vscode.WebviewPanel
 
   private data: NotionData
@@ -21,6 +19,7 @@ export default class NotionPanel {
 
   public static async createOrShow(
     context: vscode.ExtensionContext,
+    manager: NotionPanelManager,
     id: string
   ) {
     const column = vscode.window.activeTextEditor
@@ -54,19 +53,19 @@ export default class NotionPanel {
         }
       )
 
-      this.cache.set(id, new NotionPanel(panel, context, id, data))
+      this.cache.set(id, new NotionPanel(panel, context, manager, id, data))
     }
   }
 
   private constructor(
     panel: vscode.WebviewPanel,
     context: vscode.ExtensionContext,
+    private readonly manager: NotionPanelManager,
     id: string,
     data: NotionData
   ) {
     this.panel = panel
-    this.uri = context.extensionUri
-    this.panel.iconPath = this.iconPath()
+    this.panel.iconPath = manager.iconPath
 
     this.id = id
     this.data = data
@@ -93,7 +92,7 @@ export default class NotionPanel {
       async (message) => {
         switch (message.command) {
           case 'open':
-            await NotionPanel.createOrShow(context, message.text)
+            await NotionPanel.createOrShow(context, manager, message.text)
             break
         }
       },
@@ -148,82 +147,10 @@ export default class NotionPanel {
         .reduce<string>((a, b) => a + b, '')
     }
 
-    this.panel.webview.html = this.getHTML(this.panel.webview, this.data)
-  }
-
-  private iconPath() {
-    const root = vscode.Uri.joinPath(this.uri, 'assets')
-    return vscode.Uri.joinPath(root, 'notion.png')
-  }
-
-  private getSettingsOverrideStyles(
-    config: vscode.WorkspaceConfiguration
-  ): string {
-    return [
-      config.has('fontFamily')
-        ? `--notion-font-family: ${config.get('fontFamily')};`
-        : '',
-      config.has('fontSize') && !isNaN(config.get('fontSize') ?? NaN)
-        ? `--notion-font-size: ${config.get('fontSize')}px;`
-        : '',
-    ].join('')
-  }
-
-  private getMetaTags(webview: vscode.Webview, nonce: string): string {
-    return `
-      <meta charset="UTF-8">
-      <meta name="viewport" 
-             content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Content-Security-Policy" 
-             content="default-src 'none'; 
-                      style-src ${webview.cspSource} 'nonce-${nonce}'; 
-                      img-src ${webview.cspSource} https:; 
-                      script-src 'nonce-${nonce}';">`
-  }
-
-  private getStyles(webview: vscode.Webview): string {
-    return ['reset.css', 'vscode.css', 'notion.css']
-      .map((x) =>
-        webview.asWebviewUri(vscode.Uri.joinPath(this.uri, 'assets', x))
-      )
-      .map((x) => `<link href="${x}" rel="stylesheet" />`)
-      .join('')
-  }
-
-  private getScripts(
-    webview: vscode.Webview,
-    nonce: string,
-    data: NotionData
-  ): string {
-    const reactWebviewUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.uri, 'assets', 'webview', 'index.js')
+    this.panel.webview.html = this.manager.getHTML(
+      this.panel.webview,
+      this.data
     )
-
-    return `
-      <script nonce=${nonce}>
-        window.vscode = acquireVsCodeApi();
-        window.data = ${JSON.stringify(data)};
-      </script>
-      <script nonce="${nonce}" src="${reactWebviewUri}"></script>`
-  }
-
-  private getHTML(webview: vscode.Webview, data: NotionData) {
-    const nonce = getNonce()
-    const config = vscode.workspace.getConfiguration('VSCodeNotion')
-
-    return `
-    <!DOCTYPE html>
-    <html lang="en" 
-          style="${escapeAttribute(this.getSettingsOverrideStyles(config))}">
-    <head>
-        ${this.getMetaTags(webview, nonce)}
-        ${this.getStyles(webview)}
-    </head>
-    <body>
-        <div id="root"></div>
-        ${this.getScripts(webview, nonce, data)}
-    </body>
-    </html>`
   }
 
   private setViewActiveContext(value: boolean) {

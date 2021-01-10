@@ -2,12 +2,16 @@ import * as vscode from 'vscode'
 
 import { Command } from '../commandManager'
 import NotionPanel from '../notionPanel'
+import NotionPanelManager from '../notionPanelManager'
 import parseId from '../utils/parseId'
 
 export class OpenPage implements Command {
   public readonly id = 'vscode-notion.open'
 
-  public constructor(private readonly context: vscode.ExtensionContext) {}
+  public constructor(
+    private readonly context: vscode.ExtensionContext,
+    private readonly manager: NotionPanelManager
+  ) {}
 
   public async execute() {
     const input = await vscode.window.showInputBox({
@@ -16,7 +20,7 @@ export class OpenPage implements Command {
 
     if (!!input?.trim()) {
       const id = parseId(input)
-      await NotionPanel.createOrShow(this.context, id)
+      await NotionPanel.createOrShow(this.context, this.manager, id)
     }
   }
 }
