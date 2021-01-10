@@ -1,9 +1,11 @@
 {
+  "preview": true,
   "name": "vscode-notion",
   "version": "0.0.1",
-  "displayName": "VSCode Notion",
-  "description": "View notion documents directly in Visual Studio Code.",
   "icon": "assets/vscode-notion.png",
+  "displayName": "VSCode Notion",
+  "description": "View Notion documents directly in Visual Studio Code.",
+  "publisher": "frenco",
   "author": "Frenco <hey@frenco.dev>",
   "homepage": "https://github.com/frencojobs/vscode-notion#readme",
   "repository": {
@@ -29,17 +31,17 @@
     "configuration": {
       "title": "VSCode Notion",
       "properties": {
-        "VSCodeNotion.api": {
+        "vscode_notion.api": {
           "type": "string",
           "default": "https://notion-api.frenco.dev",
           "description": "Specifies the API url to get the Notion data from."
         },
-        "VSCodeNotion.fontSize": {
+        "vscode_notion.fontSize": {
           "type": "number",
           "default": 14,
           "description": "Specifies the font size in pixels."
         },
-        "VSCodeNotion.fontFamily": {
+        "vscode_notion.fontFamily": {
           "type": "string",
           "default": "'Helvetica Neue', sans-serif",
           "description": "Specifies the font family to use when rendering the Notion page."

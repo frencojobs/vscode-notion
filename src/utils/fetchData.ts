@@ -4,7 +4,7 @@ import axios from 'axios'
 import { NotionData } from '../types'
 
 export default async function fetchData(id: string): Promise<NotionData> {
-  const config = vscode.workspace.getConfiguration('VSCodeNotion')
+  const config = vscode.workspace.getConfiguration('vscode_notion')
   const api = config.get('api') as string
 
   if (!api.trim()) {
