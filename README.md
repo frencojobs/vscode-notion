@@ -2,7 +2,7 @@
 
 View Notion documents directly in Visual Studio Code.
 
-> Disclaimer: This is an unofficial extension made using an unofficial renderer with the data from unofficial API.
+> Disclaimer: This is an unofficial extension made using an unofficial renderer with the data from an unofficial API.
 
 ## Features
 
