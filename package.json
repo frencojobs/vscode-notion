@@ -21,6 +21,10 @@
   "categories": [
     "Other"
   ],
+  "keywords": [
+    "notion",
+    "notion.so"
+  ],
   "activationEvents": [
     "onCommand:vscode-notion.open",
     "onCommand:vscode-notion.refresh",
