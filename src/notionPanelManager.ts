@@ -83,7 +83,7 @@ export default class NotionPanelManager
   }
 
   private getStyles(webview: vscode.Webview, uri: vscode.Uri): string {
-    return ['reset.css', 'vscode.css', 'notion.css']
+    return ['reset.css', 'vscode.css', 'notion.css', 'prism.css']
       .map((x) => webview.asWebviewUri(vscode.Uri.joinPath(uri, 'assets', x)))
       .map((x) => `<link href="${x}" rel="stylesheet" />`)
       .join('')

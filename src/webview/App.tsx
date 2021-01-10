@@ -13,7 +13,6 @@ declare global {
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const App: React.FC = () => {
-  console.log(window.vscode.getState())
   return (
     <NotionRenderer
       fullPage
