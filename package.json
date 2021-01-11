@@ -1,7 +1,6 @@
 {
-  "preview": true,
   "name": "vscode-notion",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "icon": "assets/vscode-notion.png",
   "displayName": "VSCode Notion",
   "description": "View Notion documents directly in Visual Studio Code.",
