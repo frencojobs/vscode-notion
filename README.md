@@ -4,6 +4,8 @@ View Notion documents directly in Visual Studio Code.
 
 > Disclaimer: This is an unofficial extension made using an unofficial renderer with the data from an unofficial API.
 
+<img align="center" src="https://raw.githubusercontent.com/frencojobs/vscode-notion/main/.github/demo.gif" />
+
 ## Features
 
 Here is the checklist for features I'm planning to add to the extension.
