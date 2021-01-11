@@ -1,3 +1,8 @@
+## 1.0.0
+
+- Initial release
+- Add preview gif to README.md
+
 ## 0.0.4
 
 - Exclude webview dependencies from package, reducing extension size

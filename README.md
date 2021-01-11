@@ -4,6 +4,8 @@ View Notion documents directly in Visual Studio Code.
 
 > Disclaimer: This is an unofficial extension made using an unofficial renderer with the data from an unofficial API.
 
+<img align="center" src="https://raw.githubusercontent.com/frencojobs/vscode-notion/main/.github/demo.gif" />
+
 ## Features
 
 Here is the checklist for features I'm planning to add to the extension.
@@ -23,9 +25,9 @@ Here are the available settings with default values.
 
 ```json
 {
-  "vscode_notion.api": "https://notion-api.frenco.dev",
-  "vscode_notion.fontFamily": "'Helvetica Neue', sans-serif",
-  "vscode_notion.fontSize": 14
+  "VSCodeNotion.api": "https://notion-api.frenco.dev",
+  "VSCodeNotion.fontFamily": "'Helvetica Neue', sans-serif",
+  "VSCodeNotion.fontSize": 14
 }
 ```
 

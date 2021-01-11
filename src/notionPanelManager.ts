@@ -119,7 +119,7 @@ export default class NotionPanelManager
 
   public getHTML(webview: vscode.Webview, state: NotionState) {
     const nonce = getNonce()
-    const config = vscode.workspace.getConfiguration('vscode_notion')
+    const config = vscode.workspace.getConfiguration('VSCodeNotion')
 
     return `
     <!DOCTYPE html>
