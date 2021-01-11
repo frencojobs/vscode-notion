@@ -35,17 +35,17 @@
     "configuration": {
       "title": "VSCode Notion",
       "properties": {
-        "vscode_notion.api": {
+        "VSCodeNotion.api": {
           "type": "string",
           "default": "https://notion-api.frenco.dev",
           "description": "Specifies the API url to get the Notion data from."
         },
-        "vscode_notion.fontSize": {
+        "VSCodeNotion.fontSize": {
           "type": "number",
           "default": 14,
           "description": "Specifies the font size in pixels."
         },
-        "vscode_notion.fontFamily": {
+        "VSCodeNotion.fontFamily": {
           "type": "string",
           "default": "'Helvetica Neue', sans-serif",
           "description": "Specifies the font family to use when rendering the Notion page."

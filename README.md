@@ -23,9 +23,9 @@ Here are the available settings with default values.
 
 ```json
 {
-  "vscode_notion.api": "https://notion-api.frenco.dev",
-  "vscode_notion.fontFamily": "'Helvetica Neue', sans-serif",
-  "vscode_notion.fontSize": 14
+  "VSCodeNotion.api": "https://notion-api.frenco.dev",
+  "VSCodeNotion.fontFamily": "'Helvetica Neue', sans-serif",
+  "VSCodeNotion.fontSize": 14
 }
 ```
 
