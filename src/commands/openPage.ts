@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
 import { Command } from '../commandManager'
-import NotionPanelManager from '../notionPanelManager'
+import NotionPanelManager from '../features/notionPanelManager'
 import parseId from '../utils/parseId'
 
 export class OpenPage implements Command {

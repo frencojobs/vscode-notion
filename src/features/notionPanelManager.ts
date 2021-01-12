@@ -1,13 +1,14 @@
 import * as vscode from 'vscode'
 
-import { NotionData, NotionState } from './types'
+import NotionConfig from './notionConfig'
 import NotionPanel from './notionPanel'
-import escapeAttribute from './utils/escapeAttribute'
-import fetchData from './utils/fetchData'
-import getNonce from './utils/getNonce'
+import escapeAttribute from '../utils/escapeAttribute'
+import fetchData from '../utils/fetchData'
+import getNonce from '../utils/getNonce'
 
 export default class NotionPanelManager
   implements vscode.WebviewPanelSerializer {
+  public config = new NotionConfig()
   public cache = new Map<string, NotionPanel>()
 
   constructor(private readonly uri: vscode.Uri) {}
@@ -28,7 +29,7 @@ export default class NotionPanelManager
           },
           async (progress, _) => {
             progress.report({ message: 'Loading...' })
-            return fetchData(id)
+            return fetchData(this.config.api, id)
           }
         )
 
@@ -69,15 +70,20 @@ export default class NotionPanelManager
     this.cache.delete(id)
   }
 
-  private getSettingsOverrideStyles(
-    config: vscode.WorkspaceConfiguration
-  ): string {
+  public reloadConfig() {
+    this.config = new NotionConfig()
+  }
+
+  private getSettingsOverrideStyles(): string {
     return [
-      config.has('fontFamily')
-        ? `--notion-font-family: ${config.get('fontFamily')};`
+      this.config.fontFamily
+        ? `--notion-font-family: ${this.config.fontFamily};`
         : '',
-      config.has('fontSize') && !isNaN(config.get('fontSize') ?? NaN)
-        ? `--notion-font-size: ${config.get('fontSize')}px;`
+      !isNaN(this.config.fontSize)
+        ? `--notion-font-size: ${this.config.fontSize}px;`
+        : '',
+      !isNaN(this.config.lineHeight)
+        ? `--notion-line-height: ${this.config.lineHeight};`
         : '',
     ].join('')
   }
@@ -127,12 +133,11 @@ export default class NotionPanelManager
 
   public getHTML(webview: vscode.Webview, state: NotionState) {
     const nonce = getNonce()
-    const config = vscode.workspace.getConfiguration('VSCodeNotion')
 
     return `
     <!DOCTYPE html>
     <html lang="en" 
-          style="${escapeAttribute(this.getSettingsOverrideStyles(config))}">
+          style="${escapeAttribute(this.getSettingsOverrideStyles())}">
     <head>
         ${this.getMetaTags(webview, nonce)}
         ${this.getStyles(webview, this.uri)}

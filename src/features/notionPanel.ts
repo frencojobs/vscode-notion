@@ -1,8 +1,7 @@
 import * as vscode from 'vscode'
 
-import { Message, NotionData } from './types'
 import NotionPanelManager from './notionPanelManager'
-import fetchData from './utils/fetchData'
+import fetchData from '../utils/fetchData'
 
 export default class NotionPanel {
   public static readonly viewType = 'vscode-notion.view'
@@ -49,7 +48,7 @@ export default class NotionPanel {
     this.panel.reveal(column)
   }
 
-  public async refresh() {
+  public async reload() {
     this.data = await vscode.window.withProgress<NotionData>(
       {
         title: 'VSCode Notion',
@@ -57,7 +56,7 @@ export default class NotionPanel {
       },
       async (progress, _) => {
         progress.report({ message: 'Refreshing...' })
-        return fetchData(this.id)
+        return fetchData(this.manager.config.api, this.id)
       }
     )
 

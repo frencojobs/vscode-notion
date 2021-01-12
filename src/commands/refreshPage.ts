@@ -1,5 +1,5 @@
 import { Command } from '../commandManager'
-import NotionPanelManager from '../notionPanelManager'
+import NotionPanelManager from '../features/notionPanelManager'
 
 export class RefreshPage implements Command {
   public readonly id = 'vscode-notion.refresh'
@@ -7,12 +7,8 @@ export class RefreshPage implements Command {
   constructor(private readonly manager: NotionPanelManager) {}
 
   execute() {
-    const activeViews = Array.from(this.manager.cache.values()).filter(
-      (x) => x.isActive
-    )
-
-    for (const view of activeViews) {
-      view.refresh()
-    }
+    Array.from(this.manager.cache.values())
+      .filter((x) => x.isActive)
+      .forEach((x) => x.reload())
   }
 }

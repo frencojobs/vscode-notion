@@ -2,13 +2,18 @@ import * as vscode from 'vscode'
 
 import * as commands from './commands'
 import { CommandManager } from './commandManager'
-import NotionPanelManager from './notionPanelManager'
+import NotionPanelManager from './features/notionPanelManager'
 
 export function activate(context: vscode.ExtensionContext) {
   const manager = new NotionPanelManager(context.extensionUri)
 
   context.subscriptions.push(registerCommands(manager))
-  vscode.window.registerWebviewPanelSerializer('vscode-notion.view', manager)
+  context.subscriptions.push(
+    vscode.window.registerWebviewPanelSerializer('vscode-notion.view', manager)
+  )
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(() => manager.reloadConfig())
+  )
 }
 
 function registerCommands(manager: NotionPanelManager): vscode.Disposable {
