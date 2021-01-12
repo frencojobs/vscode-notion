@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(registerCommands(manager))
   context.subscriptions.push(
-    vscode.window.registerWebviewPanelSerializer('vscode_notion.view', manager)
+    vscode.window.registerWebviewPanelSerializer('vscode-notion.view', manager)
   )
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(() => manager.reloadConfig())
