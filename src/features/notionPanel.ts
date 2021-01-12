@@ -48,7 +48,7 @@ export default class NotionPanel {
     this.panel.reveal(column)
   }
 
-  public async reload() {
+  public async refresh() {
     this.data = await vscode.window.withProgress<NotionData>(
       {
         title: 'VSCode Notion',

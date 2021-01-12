@@ -9,6 +9,6 @@ export class RefreshPage implements Command {
   execute() {
     Array.from(this.manager.cache.values())
       .filter((x) => x.isActive)
-      .forEach((x) => x.reload())
+      .forEach((x) => x.refresh())
   }
 }
