@@ -29,7 +29,11 @@ export default class NotionPanelManager
           },
           async (progress, _) => {
             progress.report({ message: 'Loading...' })
-            return fetchData(this.config.api, id)
+            return fetchData({
+              id,
+              api: this.config.api,
+              accessToken: this.config.accessToken,
+            })
           }
         )
 

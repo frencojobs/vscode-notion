@@ -56,7 +56,11 @@ export default class NotionPanel {
       },
       async (progress, _) => {
         progress.report({ message: 'Refreshing...' })
-        return fetchData(this.manager.config.api, this.id)
+        return fetchData({
+          id: this.id,
+          api: this.manager.config.api,
+          accessToken: this.manager.config.accessToken,
+        })
       }
     )
 

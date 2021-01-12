@@ -40,6 +40,11 @@
           "default": "https://notion-api.frenco.dev",
           "description": "Specifies the API url to get the Notion data from."
         },
+        "VSCodeNotion.accessToken": {
+          "type": "string",
+          "default": "",
+          "description": "Specifies the personal access token to use with API."
+        },
         "VSCodeNotion.fontSize": {
           "type": "number",
           "default": 14,
