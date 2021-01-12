@@ -10,7 +10,7 @@ export default class NotionPanel {
   private disposables: Array<vscode.Disposable> = []
 
   constructor(
-    private readonly id: string,
+    public readonly id: string,
     private readonly panel: vscode.WebviewPanel,
     private readonly manager: NotionPanelManager,
     private data: NotionData

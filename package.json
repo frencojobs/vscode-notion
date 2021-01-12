@@ -27,6 +27,7 @@
   "activationEvents": [
     "onCommand:vscode-notion.open",
     "onCommand:vscode-notion.refresh",
+    "onCommand:vscode-notion.copyLink",
     "onWebviewPanel:vscode-notion.view"
   ],
   "main": "./dist/extension.js",
@@ -67,12 +68,25 @@
         "category": "VSCode Notion",
         "title": "Refresh Active Document",
         "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.copyLink",
+        "category": "VSCode Notion",
+        "title": "Copy Link to Page",
+        "icon": "$(link)"
       }
     ],
     "menus": {
       "editor/title": [
         {
           "command": "vscode-notion.refresh",
+          "when": "notionViewFocus",
+          "group": "navigation"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "vscode-notion.copyLink",
           "when": "notionViewFocus",
           "group": "navigation"
         }
