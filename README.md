@@ -13,7 +13,6 @@ Here is the checklist for features I'm planning to add to the extension.
 - [x] View notion pages
 - [ ] Support embeddings for certain trusted sources
 - [ ] Native syntax highlight for code snippets
-- [ ] Sidebar for opened pages
 - [ ] Authentication for viewing private pages
 - [ ] Sidebar for all of user's pages
 
