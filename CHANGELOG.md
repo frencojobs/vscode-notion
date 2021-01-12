@@ -1,3 +1,8 @@
+## 1.0.1
+
+- Parse URLs including usernames
+- Show error dialog
+
 ## 1.0.0
 
 - Initial release

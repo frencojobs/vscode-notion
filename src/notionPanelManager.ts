@@ -17,33 +17,41 @@ export default class NotionPanelManager
       ? vscode.window.activeTextEditor.viewColumn
       : undefined
 
-    if (this.cache.has(id)) {
-      this.cache.get(id)?.revive(column)
-    } else {
-      const data = await vscode.window.withProgress<NotionData>(
-        {
-          title: 'VSCode Notion',
-          location: vscode.ProgressLocation.Notification,
-        },
-        async (progress, _) => {
-          progress.report({ message: 'Loading...' })
-          return fetchData(id)
-        }
-      )
+    try {
+      if (this.cache.has(id)) {
+        this.cache.get(id)?.revive(column)
+      } else {
+        const data = await vscode.window.withProgress<NotionData>(
+          {
+            title: 'VSCode Notion',
+            location: vscode.ProgressLocation.Notification,
+          },
+          async (progress, _) => {
+            progress.report({ message: 'Loading...' })
+            return fetchData(id)
+          }
+        )
 
-      const panel = vscode.window.createWebviewPanel(
-        NotionPanel.viewType,
-        'VSCode Notion',
-        column || vscode.ViewColumn.One,
-        {
-          enableScripts: true,
-          retainContextWhenHidden: true,
-          localResourceRoots: [vscode.Uri.joinPath(this.uri, 'assets')],
-        }
-      )
-      panel.iconPath = this.iconPath
+        const panel = vscode.window.createWebviewPanel(
+          NotionPanel.viewType,
+          'VSCode Notion',
+          column || vscode.ViewColumn.One,
+          {
+            enableScripts: true,
+            retainContextWhenHidden: true,
+            localResourceRoots: [vscode.Uri.joinPath(this.uri, 'assets')],
+          }
+        )
+        panel.iconPath = this.iconPath
 
-      this.cache.set(id, new NotionPanel(id, panel, this, data))
+        this.cache.set(id, new NotionPanel(id, panel, this, data))
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        vscode.window.showErrorMessage(e.message)
+      } else {
+        vscode.window.showErrorMessage(e)
+      }
     }
   }
 
