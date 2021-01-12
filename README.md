@@ -26,7 +26,8 @@ Here are the available settings with default values.
 {
   "VSCodeNotion.api": "https://notion-api.frenco.dev",
   "VSCodeNotion.fontFamily": "'Helvetica Neue', sans-serif",
-  "VSCodeNotion.fontSize": 14
+  "VSCodeNotion.fontSize": 14,
+  "VSCodeNotion.lineHeight": 1.5
 }
 ```
 
