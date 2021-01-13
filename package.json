@@ -30,7 +30,10 @@
     "onCommand:vscode-notion.copyLink",
     "onCommand:vscode-notion.reloadRecents",
     "onCommand:vscode-notion.clearRecents",
-    "onCommand:vscode-notion.deleteRecentEntry",
+    "onCommand:vscode-notion.removeRecentEntry",
+    "onCommand:vscode-notion.reloadBookmarks",
+    "onCommand:vscode-notion.bookmarkEntry",
+    "onCommand:vscode-notion.removeBookmarkEntry",
     "onWebviewPanel:vscode-notion.view",
     "onView:vscode-notion-recents",
     "onView:vscode-notion-bookmarks"
@@ -71,12 +74,12 @@
       {
         "command": "vscode-notion.open",
         "category": "VSCode Notion",
-        "title": "Open A Document"
+        "title": "Open A Page"
       },
       {
         "command": "vscode-notion.refresh",
         "category": "VSCode Notion",
-        "title": "Refresh Active Document",
+        "title": "Refresh Active Page",
         "icon": "$(extensions-refresh)"
       },
       {
@@ -98,10 +101,28 @@
         "icon": "$(trash)"
       },
       {
-        "command": "vscode-notion.deleteRecentEntry",
+        "command": "vscode-notion.removeRecentEntry",
         "category": "VSCode Notion",
-        "title": "Delete Selected Entry",
+        "title": "Remove Selected Entry",
         "icon": "$(trash)"
+      },
+      {
+        "command": "vscode-notion.reloadBookmarks",
+        "category": "VSCode Notion",
+        "title": "Reload Bookmarked Pages",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.bookmarkEntry",
+        "category": "VSCode Notion",
+        "title": "Bookmark Active Page",
+        "icon": "$(star-empty)"
+      },
+      {
+        "command": "vscode-notion.removeBookmarkEntry",
+        "category": "VSCode Notion",
+        "title": "Remove Active Page from Bookmarks",
+        "icon": "$(star-full)"
       }
     ],
     "viewsContainers": {
@@ -148,7 +169,19 @@
           "when": "false"
         },
         {
-          "command": "vscode-notion.deleteRecentEntry",
+          "command": "vscode-notion.removeRecentEntry",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.reloadBookmarks",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.bookmarkEntry",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.removeBookmarkEntry",
           "when": "false"
         }
       ],
@@ -156,14 +189,21 @@
         {
           "command": "vscode-notion.refresh",
           "when": "notionViewFocus",
-          "group": "navigation"
-        }
-      ],
-      "editor/title/context": [
+          "group": "navigation@0"
+        },
+        {
+          "command": "vscode-notion.bookmarkEntry",
+          "when": "notionViewFocus && !notionPageBookmark",
+          "group": "navigation@1"
+        },
+        {
+          "command": "vscode-notion.removeBookmarkEntry",
+          "when": "notionViewFocus && notionPageBookmark",
+          "group": "navigation@1"
+        },
         {
           "command": "vscode-notion.copyLink",
-          "when": "notionViewFocus",
-          "group": "navigation"
+          "when": "notionViewFocus"
         }
       ],
       "view/title": [
@@ -176,11 +216,16 @@
           "command": "vscode-notion.clearRecents",
           "when": "view == vscode-notion-recents",
           "group": "navigation@1"
+        },
+        {
+          "command": "vscode-notion.reloadBookmarks",
+          "when": "view == vscode-notion-bookmarks",
+          "group": "navigation@0"
         }
       ],
       "view/item/context": [
         {
-          "command": "vscode-notion.deleteRecentEntry",
+          "command": "vscode-notion.removeRecentEntry",
           "when": "view == vscode-notion-recents"
         }
       ]

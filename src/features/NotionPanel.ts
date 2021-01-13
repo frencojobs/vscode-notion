@@ -7,6 +7,7 @@ import getTitle from '../utils/getTitle'
 export default class NotionPanel {
   public static readonly viewType = 'vscode-notion.view'
   public static readonly viewActiveContextKey = 'notionViewFocus'
+  public static readonly viewBookmarkContextKey = 'notionPageBookmark'
 
   private disposables: Array<vscode.Disposable> = []
 
@@ -21,6 +22,7 @@ export default class NotionPanel {
     this.panel.onDidChangeViewState(
       ({ webviewPanel }) => {
         this.setViewActiveContext(webviewPanel.active)
+
         if (this.panel.visible) {
           this.update()
         }
@@ -68,6 +70,20 @@ export default class NotionPanel {
     this.update()
   }
 
+  public bookmark() {
+    this.manager.updateBookmarkEntry({
+      id: this.id,
+      title: getTitle(this.data),
+    })
+
+    this.setBookmarkContext(true)
+  }
+
+  public removeBookmark() {
+    this.manager.removeBookmarkEntry(this.id)
+    this.update()
+  }
+
   private dispose() {
     this.setViewActiveContext(false)
     this.panel.dispose()
@@ -83,8 +99,17 @@ export default class NotionPanel {
 
   private update() {
     const title = getTitle(this.data)
-
     this.panel.title = title
+
+    if (Object.keys(this.manager.bookmarks).includes(this.id)) {
+      this.manager.updateBookmarkEntry({
+        id: this.id,
+        title,
+      })
+      this.setBookmarkContext(true)
+    } else {
+      this.setBookmarkContext(false)
+    }
 
     this.manager.updateRecentEntry({
       id: this.id,
@@ -101,6 +126,14 @@ export default class NotionPanel {
     vscode.commands.executeCommand(
       'setContext',
       NotionPanel.viewActiveContextKey,
+      value
+    )
+  }
+
+  private setBookmarkContext(value: boolean) {
+    vscode.commands.executeCommand(
+      'setContext',
+      NotionPanel.viewBookmarkContextKey,
       value
     )
   }

@@ -8,19 +8,18 @@ import getNonce from '../utils/getNonce'
 
 export default class NotionPanelManager
   implements vscode.WebviewPanelSerializer {
-  private readonly recentKey = 'recents'
+  private readonly recentsKey = 'recents'
+  private readonly bookmarksKey = 'bookmarks'
   private readonly uri: vscode.Uri
 
   public onDidRecentsUpdated: () => void = () => {}
+  public onDidBookmarksUpdated: () => void = () => {}
+
   public config = new NotionConfig()
   public cache = new Map<string, NotionPanel>()
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.uri = this.context.extensionUri
-
-    if (!this.context.globalState.get<Array<string>>(this.recentKey)) {
-      this.context.globalState.update(this.recentKey, [])
-    }
   }
 
   public async createOrShow(id: string) {
@@ -90,13 +89,21 @@ export default class NotionPanelManager
 
   public get recents() {
     return (
-      this.context.globalState.get<Record<string, string>>(this.recentKey) ?? {}
+      this.context.globalState.get<Record<string, string>>(this.recentsKey) ??
+      {}
+    )
+  }
+
+  public get bookmarks() {
+    return (
+      this.context.globalState.get<Record<string, string>>(this.bookmarksKey) ??
+      {}
     )
   }
 
   public async removeRecentEntry(id: string) {
     const recents = this.context.globalState.get<Record<string, string>>(
-      this.recentKey
+      this.recentsKey
     )
 
     if (recents) {
@@ -106,12 +113,24 @@ export default class NotionPanelManager
     this.onDidRecentsUpdated()
   }
 
-  public async updateRecentEntry({ id, title }: { id: string; title: string }) {
-    const recents = this.context.globalState.get<Record<string, string>>(
-      this.recentKey
+  public async removeBookmarkEntry(id: string) {
+    const bookmarks = this.context.globalState.get<Record<string, string>>(
+      this.bookmarksKey
     )
 
-    await this.context.globalState.update(this.recentKey, {
+    if (bookmarks) {
+      delete bookmarks[id]
+    }
+
+    this.onDidBookmarksUpdated()
+  }
+
+  public async updateRecentEntry({ id, title }: { id: string; title: string }) {
+    const recents = this.context.globalState.get<Record<string, string>>(
+      this.recentsKey
+    )
+
+    await this.context.globalState.update(this.recentsKey, {
       ...(!!recents ? recents : {}),
       [id]: title,
     })
@@ -119,12 +138,35 @@ export default class NotionPanelManager
     this.onDidRecentsUpdated()
   }
 
+  public async updateBookmarkEntry({
+    id,
+    title,
+  }: {
+    id: string
+    title: string
+  }) {
+    const bookmarks = this.context.globalState.get<Record<string, string>>(
+      this.bookmarksKey
+    )
+
+    await this.context.globalState.update(this.bookmarksKey, {
+      ...(!!bookmarks ? bookmarks : {}),
+      [id]: title,
+    })
+
+    this.onDidBookmarksUpdated()
+  }
+
   public reloadRecents() {
     this.onDidRecentsUpdated()
   }
 
+  public reloadBookmarks() {
+    this.onDidBookmarksUpdated()
+  }
+
   public clearRecents() {
-    this.context.globalState.update(this.recentKey, {})
+    this.context.globalState.update(this.recentsKey, {})
     this.onDidRecentsUpdated()
   }
 

@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 import NotionPageItem from './NotionItem'
 import NotionPanelManager from './NotionPanelManager'
 
-export default class RecentsProvider
+export default class BookmarksProvider
   implements vscode.TreeDataProvider<NotionPageItem> {
   // --- yep, copied from StackOverflow
   private _onDidChangeTreeData: vscode.EventEmitter<
@@ -19,7 +19,7 @@ export default class RecentsProvider
   /// ---
 
   constructor(private readonly manager: NotionPanelManager) {
-    this.manager.onDidRecentsUpdated = () => {
+    this.manager.onDidBookmarksUpdated = () => {
       this.refresh()
     }
   }
@@ -30,7 +30,7 @@ export default class RecentsProvider
 
   getChildren(): Thenable<Array<NotionPageItem>> {
     return Promise.resolve(
-      Object.entries(this.manager.recents).map(
+      Object.entries(this.manager.bookmarks).map(
         ([id, title]) => new NotionPageItem(title, id)
       )
     )
