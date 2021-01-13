@@ -130,7 +130,7 @@
         {
           "id": "vscode-notion-sidebar",
           "title": "VSCode Notion",
-          "icon": "resources/icons/notion.svg"
+          "icon": "resources/icons/dark/notion.svg"
         }
       ]
     },

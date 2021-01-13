@@ -226,7 +226,10 @@ export default class NotionPanelManager
 
   public get iconPath() {
     const root = vscode.Uri.joinPath(this.uri, 'resources', 'icons')
-    return vscode.Uri.joinPath(root, 'notion.svg')
+    return {
+      light: vscode.Uri.joinPath(root, 'light', 'notion.svg'),
+      dark: vscode.Uri.joinPath(root, 'dark', 'notion.svg'),
+    }
   }
 
   public getHTML(webview: vscode.Webview, state: NotionState) {
