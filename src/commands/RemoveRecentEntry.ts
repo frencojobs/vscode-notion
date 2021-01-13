@@ -4,7 +4,7 @@ import { Command } from '../CommandManager'
 import NotionPanelManager from '../features/NotionPanelManager'
 
 export class RemoveRecentEntry implements Command {
-  public readonly id = 'vscode-notion.deleteRecentEntry'
+  public readonly id = 'vscode-notion.removeRecentEntry'
 
   constructor(private readonly manager: NotionPanelManager) {}
 
