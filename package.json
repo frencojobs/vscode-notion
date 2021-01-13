@@ -104,7 +104,7 @@
         "command": "vscode-notion.removeRecent",
         "category": "VSCode Notion",
         "title": "Remove Item From Recents",
-        "icon": "$(trash)"
+        "icon": "$(close)"
       },
       {
         "command": "vscode-notion.refreshBookmarks",
@@ -226,7 +226,8 @@
       "view/item/context": [
         {
           "command": "vscode-notion.removeRecent",
-          "when": "view == vscode-notion-recents"
+          "when": "view == vscode-notion-recents",
+          "group": "inline"
         }
       ]
     }
