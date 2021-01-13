@@ -20,9 +20,7 @@ export default class NotionPanel {
     this.update()
     this.panel.onDidDispose(() => this.dispose(), null, this.disposables)
     this.panel.onDidChangeViewState(
-      ({ webviewPanel }) => {
-        this.setViewActiveContext(webviewPanel.active)
-
+      (_) => {
         if (this.panel.visible) {
           this.update()
         }
@@ -100,6 +98,8 @@ export default class NotionPanel {
   private update() {
     const title = getTitle(this.data)
     this.panel.title = title
+
+    this.setViewActiveContext(this.panel.active)
 
     if (Object.keys(this.manager.bookmarks).includes(this.id)) {
       this.manager.updateBookmarkEntry({
