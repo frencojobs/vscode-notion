@@ -134,6 +134,12 @@
         }
       ]
     },
+    "viewsWelcome": [
+      {
+        "view": "vscode-notion-recents",
+        "contents": "You have not yet opened a page recently.\n[Open A Page](command:vscode-notion.openPage)"
+      }
+    ],
     "views": {
       "vscode-notion-sidebar": [
         {
