@@ -1,10 +1,8 @@
-import * as vscode from 'vscode'
-
 import { Command } from '../CommandManager'
 import NotionPanelManager from '../features/NotionPanelManager'
 
-export class RemoveBookmarkEntry implements Command {
-  public readonly id = 'vscode-notion.removeBookmarkEntry'
+export class UnBookmarkPage implements Command {
+  public readonly id = 'vscode-notion.unBookmarkPage'
 
   constructor(private readonly manager: NotionPanelManager) {}
 
@@ -14,7 +12,7 @@ export class RemoveBookmarkEntry implements Command {
     )
 
     if (activeViews.length > 0) {
-      activeViews[0].removeBookmark()
+      activeViews[0].unBookmark()
     }
   }
 }

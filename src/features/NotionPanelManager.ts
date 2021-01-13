@@ -101,7 +101,7 @@ export default class NotionPanelManager
     )
   }
 
-  public async removeRecentEntry(id: string) {
+  public async removeRecent(id: string) {
     const recents = this.context.globalState.get<Record<string, string>>(
       this.recentsKey
     )
@@ -157,11 +157,11 @@ export default class NotionPanelManager
     this.onDidBookmarksUpdated()
   }
 
-  public reloadRecents() {
+  public refreshRecents() {
     this.onDidRecentsUpdated()
   }
 
-  public reloadBookmarks() {
+  public refreshBookmarks() {
     this.onDidBookmarksUpdated()
   }
 

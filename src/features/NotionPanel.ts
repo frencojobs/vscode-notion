@@ -5,8 +5,8 @@ import fetchData from '../utils/fetchData'
 import getTitle from '../utils/getTitle'
 
 export default class NotionPanel {
-  public static readonly viewType = 'vscode-notion.view'
-  public static readonly viewActiveContextKey = 'notionViewFocus'
+  public static readonly viewType = 'vscode-notion.pageView'
+  public static readonly viewActiveContextKey = 'notionPageFocus'
   public static readonly viewBookmarkContextKey = 'notionPageBookmark'
 
   private disposables: Array<vscode.Disposable> = []
@@ -77,7 +77,7 @@ export default class NotionPanel {
     this.setBookmarkContext(true)
   }
 
-  public removeBookmark() {
+  public unBookmark() {
     this.manager.removeBookmarkEntry(this.id)
     this.update()
   }

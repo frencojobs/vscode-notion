@@ -5,7 +5,7 @@ import NotionPanelManager from '../features/NotionPanelManager'
 import parseId from '../utils/parseId'
 
 export class OpenPage implements Command {
-  public readonly id = 'vscode-notion.open'
+  public readonly id = 'vscode-notion.openPage'
 
   public constructor(private readonly manager: NotionPanelManager) {}
 

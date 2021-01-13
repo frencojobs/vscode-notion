@@ -2,7 +2,7 @@ import { Command } from '../CommandManager'
 import NotionPanelManager from '../features/NotionPanelManager'
 
 export class RefreshPage implements Command {
-  public readonly id = 'vscode-notion.refresh'
+  public readonly id = 'vscode-notion.refreshPage'
 
   constructor(private readonly manager: NotionPanelManager) {}
 

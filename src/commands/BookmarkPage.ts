@@ -1,8 +1,8 @@
 import { Command } from '../CommandManager'
 import NotionPanelManager from '../features/NotionPanelManager'
 
-export class BookmarkEntry implements Command {
-  public readonly id = 'vscode-notion.bookmarkEntry'
+export class BookmarkPage implements Command {
+  public readonly id = 'vscode-notion.bookmarkPage'
 
   constructor(private readonly manager: NotionPanelManager) {}
 

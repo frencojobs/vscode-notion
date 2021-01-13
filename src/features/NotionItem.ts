@@ -4,7 +4,7 @@ export default class NotionPageItem extends vscode.TreeItem {
   iconPath = new vscode.ThemeIcon('symbol-file')
   command: vscode.Command = {
     title: 'Open Page',
-    command: 'vscode-notion.open',
+    command: 'vscode-notion.openPage',
     arguments: [this.id],
   }
 

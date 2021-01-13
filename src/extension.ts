@@ -13,7 +13,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(registerCommands(manager))
   context.subscriptions.push(
-    vscode.window.registerWebviewPanelSerializer('vscode-notion.view', manager)
+    vscode.window.registerWebviewPanelSerializer(
+      'vscode-notion.pageView',
+      manager
+    )
   )
   context.subscriptions.push(
     vscode.window.registerTreeDataProvider('vscode-notion-recents', recents)
@@ -35,10 +38,10 @@ function registerCommands(manager: NotionPanelManager): vscode.Disposable {
   commandManager.register(new commands.CopyLink(manager))
 
   commandManager.register(new commands.ClearRecents(manager))
-  commandManager.register(new commands.ReloadRecents(manager))
-  commandManager.register(new commands.RemoveRecentEntry(manager))
+  commandManager.register(new commands.RefreshRecents(manager))
+  commandManager.register(new commands.RemoveRecent(manager))
 
-  commandManager.register(new commands.BookmarkEntry(manager))
-  commandManager.register(new commands.RemoveBookmarkEntry(manager))
+  commandManager.register(new commands.BookmarkPage(manager))
+  commandManager.register(new commands.UnBookmarkPage(manager))
   return commandManager
 }
