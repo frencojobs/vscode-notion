@@ -53,6 +53,11 @@
           "default": "",
           "description": "Specifies the personal access token to use with API."
         },
+        "VSCodeNotion.allowEmbeds": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether to allow embeds or not."
+        },
         "VSCodeNotion.fontSize": {
           "type": "number",
           "default": 14,

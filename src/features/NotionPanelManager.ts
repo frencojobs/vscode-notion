@@ -5,6 +5,7 @@ import NotionPanel from './NotionPanel'
 import escapeAttribute from '../utils/escapeAttribute'
 import fetchData from '../utils/fetchData'
 import getNonce from '../utils/getNonce'
+import sources from '../sources'
 
 export default class NotionPanelManager
   implements vscode.WebviewPanelSerializer {
@@ -185,12 +186,17 @@ export default class NotionPanelManager
   }
 
   private getMetaTags(webview: vscode.Webview, nonce: string): string {
+    const trustedSources = this.config.allowEmbeds
+      ? sources.join(' ')
+      : "'none'"
+
     return `
     <meta charset="UTF-8">
     <meta name="viewport" 
             content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" 
-            content="default-src 'none'; 
+            content="frame-src ${trustedSources};
+                    default-src 'none'; 
                     style-src ${webview.cspSource} 'nonce-${nonce}'; 
                     img-src ${webview.cspSource} https:; 
                     script-src 'nonce-${nonce}';">`
