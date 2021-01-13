@@ -30,9 +30,9 @@ export default class RecentsProvider
 
   getChildren(): Thenable<Array<NotionPageItem>> {
     return Promise.resolve(
-      Object.entries(this.manager.recents).map(
-        ([id, title]) => new NotionPageItem(title, id)
-      )
+      Object.entries(this.manager.recents)
+        .reverse()
+        .map(([id, title]) => new NotionPageItem(title, id))
     )
   }
 }
