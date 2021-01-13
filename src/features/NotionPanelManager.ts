@@ -8,10 +8,20 @@ import getNonce from '../utils/getNonce'
 
 export default class NotionPanelManager
   implements vscode.WebviewPanelSerializer {
+  private readonly recentKey = 'recents'
+  private readonly uri: vscode.Uri
+
+  public onDidRecentsUpdated: () => void = () => {}
   public config = new NotionConfig()
   public cache = new Map<string, NotionPanel>()
 
-  constructor(private readonly uri: vscode.Uri) {}
+  constructor(private readonly context: vscode.ExtensionContext) {
+    this.uri = this.context.extensionUri
+
+    if (!this.context.globalState.get<Array<string>>(this.recentKey)) {
+      this.context.globalState.update(this.recentKey, [])
+    }
+  }
 
   public async createOrShow(id: string) {
     const column = vscode.window.activeTextEditor
@@ -44,7 +54,7 @@ export default class NotionPanelManager
           {
             enableScripts: true,
             retainContextWhenHidden: true,
-            localResourceRoots: [vscode.Uri.joinPath(this.uri, 'assets')],
+            localResourceRoots: [vscode.Uri.joinPath(this.uri, 'resources')],
           }
         )
         panel.iconPath = this.iconPath
@@ -78,6 +88,46 @@ export default class NotionPanelManager
     this.config = new NotionConfig()
   }
 
+  public get recents() {
+    return (
+      this.context.globalState.get<Record<string, string>>(this.recentKey) ?? {}
+    )
+  }
+
+  public async removeRecentEntry(id: string) {
+    const recents = this.context.globalState.get<Record<string, string>>(
+      this.recentKey
+    )
+
+    if (recents) {
+      delete recents[id]
+    }
+
+    this.onDidRecentsUpdated()
+  }
+
+  public async updateRecentEntry({ id, title }: { id: string; title: string }) {
+    const recents = this.context.globalState.get<Record<string, string>>(
+      this.recentKey
+    )
+
+    await this.context.globalState.update(this.recentKey, {
+      ...(!!recents ? recents : {}),
+      [id]: title,
+    })
+
+    this.onDidRecentsUpdated()
+  }
+
+  public reloadRecents() {
+    this.onDidRecentsUpdated()
+  }
+
+  public clearRecents() {
+    this.context.globalState.update(this.recentKey, {})
+    this.onDidRecentsUpdated()
+  }
+
   private getSettingsOverrideStyles(): string {
     return [
       this.config.fontFamily
@@ -106,7 +156,9 @@ export default class NotionPanelManager
 
   private getStyles(webview: vscode.Webview, uri: vscode.Uri): string {
     return ['reset.css', 'vscode.css', 'notion.css', 'prism.css']
-      .map((x) => webview.asWebviewUri(vscode.Uri.joinPath(uri, 'assets', x)))
+      .map((x) =>
+        webview.asWebviewUri(vscode.Uri.joinPath(uri, 'resources', 'styles', x))
+      )
       .map((x) => `<link href="${x}" rel="stylesheet" />`)
       .join('')
   }
@@ -118,7 +170,7 @@ export default class NotionPanelManager
     state: NotionState
   ): string {
     const reactWebviewUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(uri, 'assets', 'webview', 'index.js')
+      vscode.Uri.joinPath(uri, 'resources', 'webview', 'index.js')
     )
 
     return `
@@ -131,8 +183,8 @@ export default class NotionPanelManager
   }
 
   public get iconPath() {
-    const root = vscode.Uri.joinPath(this.uri, 'assets')
-    return vscode.Uri.joinPath(root, 'notion.png')
+    const root = vscode.Uri.joinPath(this.uri, 'resources', 'icons')
+    return vscode.Uri.joinPath(root, 'notion.svg')
   }
 
   public getHTML(webview: vscode.Webview, state: NotionState) {

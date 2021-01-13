@@ -14,5 +14,5 @@
     "no-throw-literal": "warn",
     "semi": "off"
   },
-  "ignorePatterns": "assets"
+  "ignorePatterns": "resources"
 }

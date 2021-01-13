@@ -9,16 +9,19 @@ export class OpenPage implements Command {
 
   public constructor(private readonly manager: NotionPanelManager) {}
 
-  public execute() {
-    vscode.window
-      .showInputBox({
-        prompt: 'Enter a full URL or just ID of the page.',
-      })
-      .then((input) => {
-        if (!!input?.trim()) {
-          const id = parseId(input)
-          this.manager.createOrShow(id)
-        }
-      })
+  public async execute(urlOrId?: string) {
+    let input = urlOrId ?? ''
+
+    if (!urlOrId) {
+      input =
+        (await vscode.window.showInputBox({
+          prompt: 'Enter a full URL or just ID of the page.',
+        })) ?? ''
+    }
+
+    if (!!input.trim()) {
+      const id = parseId(input)
+      this.manager.createOrShow(id)
+    }
   }
 }

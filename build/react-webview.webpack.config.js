@@ -8,7 +8,7 @@ const config = {
   mode: 'production',
   entry: './src/webview/index.tsx',
   output: {
-    path: path.resolve(__dirname, '..', 'assets/webview'),
+    path: path.resolve(__dirname, '..', 'resources/webview'),
     filename: 'index.js',
     libraryTarget: 'umd',
   },

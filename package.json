@@ -1,7 +1,7 @@
 {
   "name": "vscode-notion",
   "version": "1.0.1",
-  "icon": "assets/vscode-notion.png",
+  "icon": "resources/icons/vscode-notion.png",
   "displayName": "VSCode Notion",
   "description": "View Notion documents directly in Visual Studio Code.",
   "publisher": "frenco",
@@ -28,7 +28,12 @@
     "onCommand:vscode-notion.open",
     "onCommand:vscode-notion.refresh",
     "onCommand:vscode-notion.copyLink",
-    "onWebviewPanel:vscode-notion.view"
+    "onCommand:vscode-notion.reloadRecents",
+    "onCommand:vscode-notion.clearRecents",
+    "onCommand:vscode-notion.deleteRecentEntry",
+    "onWebviewPanel:vscode-notion.view",
+    "onView:vscode-notion-recents",
+    "onView:vscode-notion-bookmarks"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -79,9 +84,74 @@
         "category": "VSCode Notion",
         "title": "Copy Link to Page",
         "icon": "$(link)"
+      },
+      {
+        "command": "vscode-notion.reloadRecents",
+        "category": "VSCode Notion",
+        "title": "Reload Recently Opened Pages",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.clearRecents",
+        "category": "VSCode Notion",
+        "title": "Clear Recently Opened Pages",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "vscode-notion.deleteRecentEntry",
+        "category": "VSCode Notion",
+        "title": "Delete Selected Entry",
+        "icon": "$(trash)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vscode-notion-sidebar",
+          "title": "VSCode Notion",
+          "icon": "resources/icons/notion.svg"
+        }
+      ]
+    },
+    "views": {
+      "vscode-notion-sidebar": [
+        {
+          "type": "tree",
+          "id": "vscode-notion-recents",
+          "name": "Recents",
+          "contextualTitle": "Recently Opened Pages"
+        },
+        {
+          "type": "tree",
+          "id": "vscode-notion-bookmarks",
+          "name": "Bookmarks",
+          "contextualTitle": "Bookmarked Pages"
+        }
+      ]
+    },
     "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-notion.refresh",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.copyLink",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.reloadRecents",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.clearRecents",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.deleteRecentEntry",
+          "when": "false"
+        }
+      ],
       "editor/title": [
         {
           "command": "vscode-notion.refresh",
@@ -94,6 +164,24 @@
           "command": "vscode-notion.copyLink",
           "when": "notionViewFocus",
           "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "vscode-notion.reloadRecents",
+          "when": "view == vscode-notion-recents",
+          "group": "navigation@0"
+        },
+        {
+          "command": "vscode-notion.clearRecents",
+          "when": "view == vscode-notion-recents",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-notion.deleteRecentEntry",
+          "when": "view == vscode-notion-recents"
         }
       ]
     }

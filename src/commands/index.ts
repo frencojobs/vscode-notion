@@ -1,3 +1,6 @@
 export { OpenPage } from './OpenPage'
 export { RefreshPage } from './RefreshPage'
 export { CopyLink } from './CopyLink'
+export { ClearRecents } from './ClearRecents'
+export { ReloadRecents } from './ReloadRecents'
+export { DeleteRecentEntry } from './DeleteRecentEntry'

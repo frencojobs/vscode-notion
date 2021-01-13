@@ -2,6 +2,7 @@ import * as vscode from 'vscode'
 
 import NotionPanelManager from './NotionPanelManager'
 import fetchData from '../utils/fetchData'
+import getTitle from '../utils/getTitle'
 
 export default class NotionPanel {
   public static readonly viewType = 'vscode-notion.view'
@@ -81,20 +82,14 @@ export default class NotionPanel {
   }
 
   private update() {
-    const firstKey = Object.keys(this.data)[0]
-    const firstBlock = (this.data[firstKey] as {
-      value: Record<string, unknown>
-    }).value as {
-      properties: {
-        title: Array<Array<unknown>>
-      }
-    }
+    const title = getTitle(this.data)
 
-    if (firstBlock?.properties?.title?.[0]) {
-      this.panel.title = firstBlock.properties.title[0]
-        .filter((x) => typeof x === 'string')
-        .reduce<string>((a, b) => a + b, '')
-    }
+    this.panel.title = title
+
+    this.manager.updateRecentEntry({
+      id: this.id,
+      title,
+    })
 
     this.panel.webview.html = this.manager.getHTML(this.panel.webview, {
       id: this.id,
