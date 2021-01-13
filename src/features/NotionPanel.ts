@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 
-import NotionPanelManager from './notionPanelManager'
+import NotionPanelManager from './NotionPanelManager'
 import fetchData from '../utils/fetchData'
 
 export default class NotionPanel {

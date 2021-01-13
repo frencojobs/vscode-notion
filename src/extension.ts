@@ -1,8 +1,8 @@
 import * as vscode from 'vscode'
 
 import * as commands from './commands'
-import { CommandManager } from './commandManager'
-import NotionPanelManager from './features/notionPanelManager'
+import { CommandManager } from './CommandManager'
+import NotionPanelManager from './features/NotionPanelManager'
 
 export function activate(context: vscode.ExtensionContext) {
   const manager = new NotionPanelManager(context.extensionUri)

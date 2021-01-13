@@ -1,5 +1,5 @@
-import { Command } from '../commandManager'
-import NotionPanelManager from '../features/notionPanelManager'
+import { Command } from '../CommandManager'
+import NotionPanelManager from '../features/NotionPanelManager'
 
 export class RefreshPage implements Command {
   public readonly id = 'vscode-notion.refresh'

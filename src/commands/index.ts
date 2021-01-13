@@ -1,3 +1,3 @@
-export { OpenPage } from './openPage'
-export { RefreshPage } from './refreshPage'
-export { CopyLink } from './copyLink'
+export { OpenPage } from './OpenPage'
+export { RefreshPage } from './RefreshPage'
+export { CopyLink } from './CopyLink'

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 
-import NotionConfig from './notionConfig'
-import NotionPanel from './notionPanel'
+import NotionConfig from './NotionConfig'
+import NotionPanel from './NotionPanel'
 import escapeAttribute from '../utils/escapeAttribute'
 import fetchData from '../utils/fetchData'
 import getNonce from '../utils/getNonce'
