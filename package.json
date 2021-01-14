@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "icon": "resources/icons/vscode-notion.png",
   "displayName": "VSCode Notion",
-  "description": "View Notion documents directly in Visual Studio Code.",
+  "description": "Browse Notion pages directly in Visual Studio Code.",
   "publisher": "frenco",
   "author": "Frenco <hey@frenco.dev>",
   "homepage": "https://github.com/frencojobs/vscode-notion#readme",
