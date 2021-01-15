@@ -1,11 +1,8 @@
-<h1 align="center">
-  <br>
-  <img src="https://raw.githubusercontent.com/frencojobs/vscode-notion/dev/.github/vscode-notion.png" alt="logo" width="100" />
-  <br>
-  VSCode Notion
-</h1>
+<img src="https://raw.githubusercontent.com/frencojobs/vscode-notion/dev/.github/vscode-notion.png" alt="logo" width="50" height="50" align="left" />
 
-<h4 align="center">Browse Notion pages directly in Visual Studio Code.</h4>
+# VSCode Notion
+
+Browse Notion pages directly in Visual Studio Code.
 
 > Disclaimer: This is an unofficial extension made using an unofficial renderer with the data from an unofficial API.
 
