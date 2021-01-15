@@ -1,4 +1,11 @@
-# VSCode Notion
+<h1 align="center">
+  <br>
+  <img src="https://raw.githubusercontent.com/frencojobs/vscode-notion/dev/.github/vscode-notion.png" alt="logo" width="150" />
+  <br>
+  VSCode Notion
+  <br>
+  <br>
+</h1>
 
 Browse Notion pages directly in Visual Studio Code.
 
@@ -27,27 +34,27 @@ _Authentication is not currently available since the unofficial API doesn't supp
 
 ## Configuration
 
-**API**
+### API
 
 A URL to get the data for Notion pages. By default, it is a hosted version of [Notion Api Worker](https://github.com/splitbee/notion-api-worker) and feel free to host your own and use.
 
-**Access Token**
+### Access Token
 
 The `Authorization` header to be used when getting the data from the API. Will be empty by default and replace it with your own to view private pages of yours. As of now, you can get the token from `token_v2` of Notion website's cookies in your web browser.
 
-**Allow Embeds**
+### Allow Embeds
 
 A boolean value to determine whether to allow iframe embeddings when viewing pages. It will be `false` by default.
 
-**Font Family**
+### Font Family
 
 A comma separated string of font families to use in the pages. Will be `'Helvetica Neue', sans-serif` by default.
 
-**Font Size**
+### Font Size
 
 The font size in pixels to use in the pages. It will be `14` by default.
 
-**Line Height**
+### Line Height
 
 The unitless line height value to use in the pages. By default, `1.5` will be used.
 
