@@ -1,17 +1,26 @@
-import * as vscode from 'vscode'
 import axios from 'axios'
 
-import { NotionData } from '../types'
-
-export default async function fetchData(id: string): Promise<NotionData> {
-  const config = vscode.workspace.getConfiguration('VSCodeNotion')
-  const api = config.get('api') as string
-
+export default async function fetchData({
+  api,
+  id,
+  accessToken,
+}: {
+  api: string
+  id: string
+  accessToken: string
+}): Promise<NotionData> {
   if (!api.trim()) {
     throw new Error("API URL can't be empty.")
   }
 
-  const res = await axios.get<NotionData>(`${api}/v1/page/${id}`)
+  const res = await axios.get<NotionData>(`${api}/v1/page/${id}`, {
+    headers: !!accessToken
+      ? {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          Authorization: `Bearer ${accessToken}`,
+        }
+      : {},
+  })
 
   if (Object.keys(res.data).length < 1) {
     throw new Error("Couldn't load the data from API.")

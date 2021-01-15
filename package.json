@@ -1,9 +1,9 @@
 {
   "name": "vscode-notion",
-  "version": "1.0.1",
-  "icon": "assets/vscode-notion.png",
+  "version": "1.1.0",
+  "icon": "resources/icons/vscode-notion.png",
   "displayName": "VSCode Notion",
-  "description": "View Notion documents directly in Visual Studio Code.",
+  "description": "Browse Notion pages directly in Visual Studio Code.",
   "publisher": "frenco",
   "author": "Frenco <hey@frenco.dev>",
   "homepage": "https://github.com/frencojobs/vscode-notion#readme",
@@ -24,12 +24,21 @@
     "notion",
     "notion.so"
   ],
-  "activationEvents": [
-    "onCommand:vscode-notion.open",
-    "onCommand:vscode-notion.refresh",
-    "onWebviewPanel:vscode-notion.view"
-  ],
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onCommand:vscode-notion.openPage",
+    "onCommand:vscode-notion.refreshPage",
+    "onCommand:vscode-notion.copyLink",
+    "onCommand:vscode-notion.refreshRecents",
+    "onCommand:vscode-notion.clearRecents",
+    "onCommand:vscode-notion.removeRecent",
+    "onCommand:vscode-notion.refreshBookmarks",
+    "onCommand:vscode-notion.bookmarkPage",
+    "onCommand:vscode-notion.unBookmarkPage",
+    "onWebviewPanel:vscode-notion.pageView",
+    "onView:vscode-notion-recents",
+    "onView:vscode-notion-bookmarks"
+  ],
   "contributes": {
     "configuration": {
       "title": "VSCode Notion",
@@ -38,6 +47,16 @@
           "type": "string",
           "default": "https://notion-api.frenco.dev",
           "description": "Specifies the API url to get the Notion data from."
+        },
+        "VSCodeNotion.accessToken": {
+          "type": "string",
+          "default": "",
+          "description": "Specifies the personal access token to use with API."
+        },
+        "VSCodeNotion.allowEmbeds": {
+          "type": "boolean",
+          "default": false,
+          "description": "Specifies whether to allow embeds or not."
         },
         "VSCodeNotion.fontSize": {
           "type": "number",
@@ -48,28 +67,178 @@
           "type": "string",
           "default": "'Helvetica Neue', sans-serif",
           "description": "Specifies the font family to use when rendering the Notion page."
+        },
+        "VSCodeNotion.lineHeight": {
+          "type": "number",
+          "default": 1.5,
+          "description": "Specifies the unitless line height."
         }
       }
     },
     "commands": [
       {
-        "command": "vscode-notion.open",
+        "command": "vscode-notion.openPage",
         "category": "VSCode Notion",
-        "title": "Open A Document"
+        "title": "Open A Notion Page"
       },
       {
-        "command": "vscode-notion.refresh",
+        "command": "vscode-notion.refreshPage",
         "category": "VSCode Notion",
-        "title": "Refresh Active Document",
+        "title": "Refresh Active Page",
         "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.copyLink",
+        "category": "VSCode Notion",
+        "title": "Copy Link to Page",
+        "icon": "$(link)"
+      },
+      {
+        "command": "vscode-notion.refreshRecents",
+        "category": "VSCode Notion",
+        "title": "Refresh Recently Opened Pages",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.clearRecents",
+        "category": "VSCode Notion",
+        "title": "Clear Recently Opened Pages",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "vscode-notion.removeRecent",
+        "category": "VSCode Notion",
+        "title": "Remove Item From Recents",
+        "icon": "$(close)"
+      },
+      {
+        "command": "vscode-notion.refreshBookmarks",
+        "category": "VSCode Notion",
+        "title": "Refresh Bookmarked Pages",
+        "icon": "$(extensions-refresh)"
+      },
+      {
+        "command": "vscode-notion.bookmarkPage",
+        "category": "VSCode Notion",
+        "title": "Bookmark A Page",
+        "icon": "$(star-empty)"
+      },
+      {
+        "command": "vscode-notion.unBookmarkPage",
+        "category": "VSCode Notion",
+        "title": "Remove Page from Bookmarks",
+        "icon": "$(star-full)"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vscode-notion-sidebar",
+          "title": "VSCode Notion",
+          "icon": "resources/icons/dark/notion.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "vscode-notion-recents",
+        "contents": "You have not yet opened a page recently.\n[Open A Page](command:vscode-notion.openPage)"
+      }
+    ],
+    "views": {
+      "vscode-notion-sidebar": [
+        {
+          "type": "tree",
+          "id": "vscode-notion-recents",
+          "name": "Recents",
+          "contextualTitle": "Recently Opened Pages"
+        },
+        {
+          "type": "tree",
+          "id": "vscode-notion-bookmarks",
+          "name": "Bookmarks",
+          "contextualTitle": "Bookmarked Pages"
+        }
+      ]
+    },
     "menus": {
+      "commandPalette": [
+        {
+          "command": "vscode-notion.refreshPage",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.copyLink",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.refreshRecents",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.clearRecents",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.removeRecent",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.refreshBookmarks",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.bookmarkPage",
+          "when": "false"
+        },
+        {
+          "command": "vscode-notion.unBookmarkPage",
+          "when": "false"
+        }
+      ],
       "editor/title": [
         {
-          "command": "vscode-notion.refresh",
-          "when": "notionViewFocus",
-          "group": "navigation"
+          "command": "vscode-notion.refreshPage",
+          "when": "notionPageFocus",
+          "group": "navigation@0"
+        },
+        {
+          "command": "vscode-notion.bookmarkPage",
+          "when": "notionPageFocus && !notionPageBookmark",
+          "group": "navigation@1"
+        },
+        {
+          "command": "vscode-notion.unBookmarkPage",
+          "when": "notionPageFocus && notionPageBookmark",
+          "group": "navigation@1"
+        },
+        {
+          "command": "vscode-notion.copyLink",
+          "when": "notionPageFocus"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "vscode-notion.refreshRecents",
+          "when": "view == vscode-notion-recents",
+          "group": "navigation@0"
+        },
+        {
+          "command": "vscode-notion.clearRecents",
+          "when": "view == vscode-notion-recents",
+          "group": "navigation@1"
+        },
+        {
+          "command": "vscode-notion.refreshBookmarks",
+          "when": "view == vscode-notion-bookmarks",
+          "group": "navigation@0"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "vscode-notion.removeRecent",
+          "when": "view == vscode-notion-recents",
+          "group": "inline"
         }
       ]
     }

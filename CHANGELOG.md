@@ -1,3 +1,11 @@
+## 1.1.0
+
+- Support viewing private pages using `accessToken` setting
+- Allow certain embeddings by the `allowEmbeds` setting
+- Allow dynamic line height using `lineHeight` setting
+- Update extension icon and demo.gif
+- Add sidebar to view recent and bookmarked pages
+
 ## 1.0.1
 
 - Parse URLs including usernames
